@@ -4,7 +4,7 @@ class Staff {
   final String lastName;
   final String email;
   final String phoneNumber;
-  final int age;
+  final DateTime dateOfBirth;
 
   Staff({
     required this.id,
@@ -12,6 +12,8 @@ class Staff {
     required this.lastName,
     required this.email,
     required this.phoneNumber,
-    required this.age,
+    required this.dateOfBirth,
   });
+
+  get role => null;
 }

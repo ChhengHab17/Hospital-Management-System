@@ -1,11 +1,9 @@
-import 'dart:ffi';
-
 import 'Staff.dart';
 
 class Doctor extends Staff {
   final String specialization;
   final int patientsPerDay;
-  final Float bonusPerPatient;
+  final double bonusPerPatient;
 
   Doctor({
     required String id,
@@ -13,7 +11,7 @@ class Doctor extends Staff {
     required String lastName,
     required String email,
     required String phoneNumber,
-    required int age,
+    required DateTime dateOfBirth,
     required this.specialization,
     required this.patientsPerDay,
     required this.bonusPerPatient,
@@ -23,6 +21,6 @@ class Doctor extends Staff {
           lastName: lastName,
           email: email,
           phoneNumber: phoneNumber,
-          age: age,
+          dateOfBirth: dateOfBirth,
         );
 }

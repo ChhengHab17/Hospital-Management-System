@@ -8,13 +8,13 @@ class Nurse extends Staff {
     required String lastName,
     required String email,
     required String phoneNumber,
-    required int age,
+    required DateTime dateOfBirth,
   }) : super(
           id: id,
           firstName: firstName,
           lastName: lastName,
           email: email,
           phoneNumber: phoneNumber,
-          age: age,
+          dateOfBirth: dateOfBirth,
         );
 }
