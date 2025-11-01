@@ -2,12 +2,14 @@ import 'Doctor.dart';
 import 'Nurse.dart';
 import 'Shift.dart';
 import 'Staff.dart';
+import '../data/ShiftRepository.dart';
 
 enum Role { Doctor, Nurse }
 
 class Admin extends Staff {
   final String password;
   final Role role;
+  final ShiftRepository shiftRepository = ShiftRepository(filePath: 'data.json');
 
   List<Staff> staffs = [];
 
@@ -30,7 +32,10 @@ class Admin extends Staff {
           email: email,
           phoneNumber: phoneNumber,
           dateOfBirth: dateOfBirth,
-        );
+        ) {
+    // Load shifts from file when Admin is created
+    loadShiftsFromFile();
+  }
 
   int get age => DateTime.now().year - dateOfBirth.year;
 
@@ -103,7 +108,7 @@ class Admin extends Staff {
       phoneNumber: phoneNumber,
       dateOfBirth: newDateOfBirth,
       password: password,
-      role: role
+      role: role,
     );
   }
 
@@ -120,7 +125,7 @@ class Admin extends Staff {
       phoneNumber: newPhoneNumber,
       dateOfBirth: dateOfBirth,
       password: password,
-      role: role
+      role: role,
     );
   }
 
@@ -137,7 +142,7 @@ class Admin extends Staff {
       phoneNumber: phoneNumber,
       dateOfBirth: dateOfBirth,
       password: newPassword,
-      role: role
+      role: role,
     );
   }
 
@@ -145,19 +150,95 @@ class Admin extends Staff {
     staffs.removeWhere((staff) => staff.id == id);
   }
 
-  void addShift(Shift shift) {
-    shifts.add(shift);
+  // Load shifts from JSON file
+  void loadShiftsFromFile() {
+    try {
+      shifts = shiftRepository.readShifts();
+      print('Loaded ${shifts.length} shifts from file');
+    } catch (e) {
+      print('Could not load shifts: $e');
+      shifts = [];
+    }
   }
 
-  void removeShift(Shift shift) {
-    shifts.remove(shift);
+  // Save shifts to JSON file
+  void saveShiftsToFile() {
+    try {
+      shiftRepository.writeShifts(shifts);
+      print('Saved ${shifts.length} shifts to file');
+    } catch (e) {
+      print('Error saving shifts: $e');
+    }
+  }
+
+  void addShift(Shift shift) {
+    // Check if shift ID already exists
+    if (shifts.any((s) => s.shiftId == shift.shiftId)) {
+      print('Shift with ID ${shift.shiftId} already exists!');
+      return;
+    }
+    
+    shifts.add(shift);
+    saveShiftsToFile();
+    print('Shift added successfully!');
+  }
+
+  void removeShift(int shiftId) {
+    final initialLength = shifts.length;
+    shifts.removeWhere((shift) => shift.shiftId == shiftId);
+    
+    if (shifts.length < initialLength) {
+      saveShiftsToFile();
+      print('Shift removed successfully!');
+    } else {
+      print('Shift with ID $shiftId not found!');
+    }
+  }
+
+  void updateShift(Shift updatedShift) {
+    final index = shifts.indexWhere((s) => s.shiftId == updatedShift.shiftId);
+    
+    if (index != -1) {
+      shifts[index] = updatedShift;
+      saveShiftsToFile();
+      print('Shift updated successfully!');
+    } else {
+      print('Shift with ID ${updatedShift.shiftId} not found!');
+    }
+  }
+
+  Shift? findShiftById(int shiftId) {
+    try {
+      return shifts.firstWhere((s) => s.shiftId == shiftId);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  void viewAllShifts() {
+    if (shifts.isEmpty) {
+      print('No shifts available.');
+      return;
+    }
+    
+    print('\n All Shifts:');
+    for (var shift in shifts) {
+      print('Shift ${shift.shiftId}: ${shift.startTime} to ${shift.endTime} (\$${shift.shiftAllowance})');
+    }
   }
 
   List<Shift> getShifts() {
     return shifts;
   }
-  void assignStaffToShift(Shift shift, Staff staff) {
+  void assignStaffToShift(int shiftId, String staffId) {
+    Shift? shift = shifts.firstWhere((s) => s.shiftId == shiftId);
+    Staff? staff = staffs.firstWhere((s) => s.id == staffId);
     shiftAssignments[shift] = staff;
+  }
+  void viewStaffAssignments() {
+    shiftAssignments.forEach((shift, staff) {
+      print('Shift ID: ${shift.shiftId} assigned to Staff ID: ${staff.id}');
+    });
   }
   
 }
