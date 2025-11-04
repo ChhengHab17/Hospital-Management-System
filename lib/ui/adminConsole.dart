@@ -50,19 +50,40 @@ class AdminConsole {
     }
 
     void _viewAllStaff() {
-        print('\n' + '=' * 80);
-        print('ALL STAFF MEMBERS'.padLeft(45));
-        print('=' * 80);
-        List<Staff> staffs = admin.getStaff();
-        if (staffs.isEmpty) {
-            print('No staff members found.');
-            return;
-        }
-        for (var staff in staffs) {
-            print('ID: ${staff.id}, Name: ${staff.firstName} ${staff.lastName}, Role: ${staff.role}, Email: ${staff.email}, Phone: ${staff.phoneNumber}');
-        }
-    }   
-
+      print('\n' + '=' * 140);
+      print('ALL STAFF MEMBERS'.padLeft(75));
+      print('=' * 140);
+      
+      List<Staff> staffs = admin.getStaff();
+      if (staffs.isEmpty) {
+          print('No staff members found.');
+          print('=' * 140);
+          return;
+      }
+      
+      // Table header
+      print('${'ID'.padRight(10)} | ${'Name'.padRight(25)} | ${'Role'.padRight(8)} | ${'Specialization'.padRight(20)} | ${'Date of Birth'.padRight(12)} | ${'Email'.padRight(25)} | ${'Phone'.padRight(15)}');
+      print('-' * 140);
+      
+      // Table rows
+      for (var staff in staffs) {
+          String id = staff.id.padRight(10);
+          String name = '${staff.firstName} ${staff.lastName}'.padRight(25);
+          String role = staff.role.toString().padRight(8);
+          String specialization = staff is Doctor 
+              ? staff.specializationName.padRight(20) 
+              : 'N/A'.padRight(20);
+          String dob = staff.dateOfBirth.toString().split(' ')[0].padRight(12);
+          String email = staff.email.padRight(25);
+          String phone = staff.phoneNumber.padRight(15);
+          
+          print('$id | $name | $role | $specialization | $dob | $email | $phone');
+      }
+      
+      print('=' * 140);
+      print('Total Staff Members: ${staffs.length}');
+      print('=' * 140);
+    }
     void _addNewStaff() {
         print('\n' + '=' * 60);
         print('ADD NEW STAFF MEMBER'.padLeft(35));
