@@ -1,6 +1,7 @@
 import 'dart:io';
 import '../domain/Admin.dart';
 import 'shiftConsole.dart';
+import 'adminConsole.dart';
 
 class HospitalConsole {
   final Admin admin = Admin(
@@ -23,9 +24,7 @@ class HospitalConsole {
           _runShiftManagement();
           break;
         case '2':
-          print('\nStaff Management - Coming Soon!');
-          print('Press Enter to continue...');
-          stdin.readLineSync();
+          _runStaffManagement();
           break;
         case '3':
           print('\nThank you for using Hospital Management System. Goodbye!');
@@ -49,9 +48,15 @@ class HospitalConsole {
     print('=' * 70);
     print('Enter your choice (1-3): ');
   }
+
   void _runShiftManagement() {
     ShiftConsole shiftConsole = ShiftConsole(admin);
     shiftConsole.run();
+  }
+
+  void _runStaffManagement() {
+    AdminConsole adminConsole = AdminConsole(admin);
+    adminConsole.run();
   }
 
 }

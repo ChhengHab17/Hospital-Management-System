@@ -39,6 +39,10 @@ class Admin extends Staff {
 
   int get age => DateTime.now().year - dateOfBirth.year;
 
+  List<Staff> getStaff() {
+    return staffs;
+  }
+
   void createAccount(
     String id, 
     String firstName, 
@@ -58,7 +62,7 @@ class Admin extends Staff {
           email: email,
           phoneNumber: phoneNumber,
           dateOfBirth: dateOfBirth,
-          specialization: '',
+          specialization: DoctorSpecialization.generalPhysician,
           patientsPerDay: 0,
           bonusPerPatient: 0.0,
         )
@@ -146,8 +150,24 @@ class Admin extends Staff {
     );
   }
 
-  void deleteAccount() {
-    staffs.removeWhere((staff) => staff.id == id);
+  bool deleteAccount(String staffId) {
+    try {
+      final initialLength = staffs.length;
+      staffs.removeWhere((staff) => staff.id == staffId);
+      
+      if (staffs.length < initialLength) {
+        // Also remove from shift assignments
+        shiftAssignments.removeWhere((shift, staff) => staff.id == staffId);
+        print('Staff member with ID $staffId deleted successfully');
+        return true;
+      } else {
+        print('Staff member with ID $staffId not found');
+        return false;
+      }
+    } catch (e) {
+      print('Error deleting account: $e');
+      return false;
+    }
   }
 
   // Load shifts from JSON file
