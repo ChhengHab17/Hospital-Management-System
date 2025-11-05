@@ -1,90 +1,14 @@
 {
   "staffs": [
     {
-      "id": "DR2",
-      "firstName": "Kun",
-      "lastName": "Pich",
-      "email": "pich@gmail.com",
-      "phoneNumber": "02312421",
-      "dateOfBirth": "2000-09-09T00:00:00.000",
-      "department": 2,
-      "specialization": 2
-    },
-    {
-      "id": "N2",
-      "firstName": "huh",
-      "lastName": "ha",
-      "email": "ha@gmail.com",
-      "phoneNumber": "08787888",
-      "dateOfBirth": "2000-09-09T00:00:00.000",
-      "department": 3
-    },
-    {
-      "id": "DR3",
-      "firstName": "Kun",
-      "lastName": "ku'",
-      "email": "kuku@gmail.com",
-      "phoneNumber": "098776655",
-      "dateOfBirth": "1998-10-09T00:00:00.000",
-      "department": 3,
-      "specialization": 3
-    },
-    {
-      "id": "DR4",
-      "firstName": "Doctor Strange",
-      "lastName": "Magic",
-      "email": "Strange@gmail.com",
-      "phoneNumber": "0111223344",
-      "dateOfBirth": "2000-01-09T00:00:00.000",
-      "department": 5,
-      "specialization": 4
-    },
-    {
-      "id": "DR5",
-      "firstName": "Pas",
-      "lastName": "Na",
-      "email": "pas@gmail.com",
-      "phoneNumber": "0912344",
-      "dateOfBirth": "1988-01-09T00:00:00.000",
-      "department": 4,
-      "specialization": 3
-    },
-    {
-      "id": "N3",
-      "firstName": "Best",
-      "lastName": "Nurse",
-      "email": "Nurse",
-      "phoneNumber": "0998881122",
-      "dateOfBirth": "1999-09-09T00:00:00.000",
-      "department": 4
-    },
-    {
-      "id": "N4",
-      "firstName": "dfsd",
-      "lastName": "sdf",
-      "email": "joo@gmail.com",
-      "phoneNumber": "0923124",
-      "dateOfBirth": "2000-12-09T00:00:00.000",
-      "department": 3
-    },
-    {
-      "id": "N5",
-      "firstName": "sdfsa",
-      "lastName": "sda",
-      "email": "da@gmail.com",
-      "phoneNumber": "0987123",
-      "dateOfBirth": "2000-12-09T00:00:00.000",
-      "department": 2
-    },
-    {
-      "id": "DR6",
-      "firstName": "ewr",
-      "lastName": "dsf",
-      "email": "df@gmail.com",
-      "phoneNumber": "09887766",
-      "dateOfBirth": "2000-09-09T00:00:00.000",
-      "department": 5,
-      "specialization": 4
+      "id": "DR1",
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@hospital.com",
+      "phoneNumber": "1111111111",
+      "dateOfBirth": "1990-05-15T00:00:00.000",
+      "department": 1,
+      "specialization": 1
     }
   ]
 }
