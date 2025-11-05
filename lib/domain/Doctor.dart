@@ -10,8 +10,6 @@ enum DoctorSpecialization {
 
 class Doctor extends Staff {
   final DoctorSpecialization specialization;
-  final int patientsPerDay;
-  final double bonusPerPatient;
 
   Doctor({
     required String id,
@@ -20,9 +18,8 @@ class Doctor extends Staff {
     required String email,
     required String phoneNumber,
     required DateTime dateOfBirth,
+    required Department department,
     required this.specialization,
-    required this.patientsPerDay,
-    required this.bonusPerPatient,
   }) : super(
           id: id,
           firstName: firstName,
@@ -30,6 +27,7 @@ class Doctor extends Staff {
           email: email,
           phoneNumber: phoneNumber,
           dateOfBirth: dateOfBirth,
+          department: department,
         );
 
   @override
@@ -58,9 +56,9 @@ class Doctor extends Staff {
     String? email,
     String? phoneNumber,
     DateTime? dateOfBirth,
+    Department? department,
     DoctorSpecialization? specialization,
     int? patientsPerDay,
-    double? bonusPerPatient,
   }) {
     return Doctor(
       id: id ?? this.id,
@@ -69,9 +67,27 @@ class Doctor extends Staff {
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      department: department ?? this.department,
       specialization: specialization ?? this.specialization,
-      patientsPerDay: patientsPerDay ?? this.patientsPerDay,
-      bonusPerPatient: bonusPerPatient ?? this.bonusPerPatient,
+    );
+  }
+  @override
+  Map<String, Object?> toJson() {
+    return {
+      ...super.toJson(),
+      'specialization': specialization.index,
+    };
+  }
+  factory Doctor.fromJson(Map<String, Object?> json) {
+    return Doctor(
+      id: json['id'] as String,
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+      email: json['email'] as String,
+      phoneNumber: json['phoneNumber'] as String,
+      dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
+      department: Department.values[json['department'] as int],
+      specialization: DoctorSpecialization.values[json['specialization'] as int],
     );
   }
 }

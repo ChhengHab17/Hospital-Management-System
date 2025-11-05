@@ -9,6 +9,7 @@ class Nurse extends Staff {
     required String email,
     required String phoneNumber,
     required DateTime dateOfBirth,
+    required Department department,
   }) : super(
           id: id,
           firstName: firstName,
@@ -16,6 +17,7 @@ class Nurse extends Staff {
           email: email,
           phoneNumber: phoneNumber,
           dateOfBirth: dateOfBirth,
+          department: department
         );
 
   @override
@@ -29,6 +31,7 @@ class Nurse extends Staff {
     String? email,
     String? phoneNumber,
     DateTime? dateOfBirth,
+    Department? department,
   }) {
     return Nurse(
       id: id ?? this.id,
@@ -37,6 +40,26 @@ class Nurse extends Staff {
       email: email ?? this.email,
       phoneNumber: phoneNumber ?? this.phoneNumber,
       dateOfBirth: dateOfBirth ?? this.dateOfBirth,
+      department: department ?? this.department,
+    );
+  }
+
+  @override
+  Map<String, Object?> toJson() {
+    return {
+      ...super.toJson(),
+    };
+  }
+
+  factory Nurse.fromJson(Map<String, Object?> json) {
+    return Nurse(
+      id: json['id'] as String,
+      firstName: json['firstName'] as String,
+      lastName: json['lastName'] as String,
+      email: json['email'] as String,
+      phoneNumber: json['phoneNumber'] as String,
+      dateOfBirth: DateTime.parse(json['dateOfBirth'] as String),
+      department: Department.values[json['department'] as int],
     );
   }
 }

@@ -1,0 +1,14 @@
+{
+  "assignments": [
+    {
+      "shiftId": 1,
+      "staffId": "DR2",
+      "patientsSeen": 12
+    },
+    {
+      "shiftId": 3,
+      "staffId": "DR3",
+      "patientsSeen": 0
+    }
+  ]
+}

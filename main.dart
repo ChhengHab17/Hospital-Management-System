@@ -4,7 +4,7 @@ void main() {
   print('\n');
   print('╔════════════════════════════════════════════════════════════════════╗');
   print('║                                                                    ║');
-  print('║          🏥 WELCOME TO HOSPITAL MANAGEMENT SYSTEM 🏥              ║');
+  print('║          🏥 WELCOME TO HOSPITAL MANAGEMENT SYSTEM 🏥               ║');
   print('║                                                                    ║');
   print('╚════════════════════════════════════════════════════════════════════╝');
   
