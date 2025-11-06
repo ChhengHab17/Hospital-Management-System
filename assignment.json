@@ -2,13 +2,13 @@
   "assignments": [
     {
       "shiftId": 1,
-      "staffId": "DR2",
-      "patientsSeen": 12
+      "staffId": "DR1",
+      "patientsSeen": 5
     },
     {
-      "shiftId": 3,
-      "staffId": "DR3",
-      "patientsSeen": 6
+      "shiftId": 2,
+      "staffId": "DR1",
+      "patientsSeen": 8
     }
   ]
 }
