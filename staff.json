@@ -2,10 +2,10 @@
   "staffs": [
     {
       "id": "DR1",
-      "firstName": "John",
-      "lastName": "Doe",
-      "email": "john.doe@hospital.com",
-      "phoneNumber": "1111111111",
+      "firstName": "Tang",
+      "lastName": "jeng",
+      "email": "Tangjeng@gmail.com",
+      "phoneNumber": "0111111111",
       "dateOfBirth": "1990-05-15T00:00:00.000",
       "department": 1,
       "specialization": 1

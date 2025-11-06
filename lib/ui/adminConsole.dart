@@ -29,7 +29,6 @@ class AdminConsole {
           break;
         case '4':
           _updateStaffInformation();
-          _pressEnterToContinue();
           break;
         case '5':
           _runShiftManagement();
@@ -164,10 +163,8 @@ class AdminConsole {
       String roleInput = stdin.readLineSync() ?? '';
       Role role = roleInput.toLowerCase() == 'doctor' ? Role.Doctor : Role.Nurse;
 
-      // Select department
       Department department = _selectDepartment();
 
-      // If Doctor, ask for specialization
       if (role == Role.Doctor) {
         DoctorSpecialization specialization = _selectSpecialization();
         admin.createDoctorAccount(
@@ -295,7 +292,6 @@ class AdminConsole {
         return;
       }
 
-      // Display update submenu
       while (true) {
         print('\n' + '=' * 60);
         print(
@@ -360,7 +356,6 @@ class AdminConsole {
       }
     }
 
-    // Replace old staff with new staff in the list
     Staff updatedStaff =
         admin.updateProfile(staff.id, firstName, lastName, dateOfBirth);
 
@@ -380,7 +375,6 @@ class AdminConsole {
     String email =
         (emailInput?.isNotEmpty ?? false) ? emailInput! : staff.email;
 
-    // Validate email
     if (email != staff.email && !email.contains('@')) {
       print('Invalid email format. Keeping current email.');
       email = staff.email;
@@ -392,7 +386,6 @@ class AdminConsole {
     String phoneNumber =
         (phoneInput?.isNotEmpty ?? false) ? phoneInput! : staff.phoneNumber;
 
-    // Replace old staff with new staff in the list
     Staff updatedStaff = admin.updateContactInfo(staff.id, email, phoneNumber);
 
     print(
@@ -410,7 +403,6 @@ class AdminConsole {
       stdout.write('Enter Shift ID: ');
       int shiftId = int.parse(stdin.readLineSync()!);
 
-      // Show doctors assigned to this shift
       var staffList = admin.getStaffForShift(shiftId);
       var doctors = staffList.where((s) => s.id.startsWith('D')).toList();
 
@@ -428,7 +420,6 @@ class AdminConsole {
       stdout.write('\nEnter Doctor ID: ');
       String doctorId = stdin.readLineSync()!;
 
-      // Verify the doctor is in the list
       if (!doctors.any((d) => d.id == doctorId)) {
         print('Error: Doctor $doctorId is not assigned to Shift $shiftId');
         print('=' * 60);

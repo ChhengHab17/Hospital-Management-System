@@ -22,8 +22,6 @@ class Admin extends Staff {
 
   List<Shift> shifts = [];
   Map<Shift, List<Staff>> shiftAssignments = {};
-  
-  // Track assignment details (patients seen, bonus) using composite key "shiftId-staffId"
   Map<String, ShiftAssignment> assignmentDetails = {};
 
   Admin({
@@ -43,7 +41,6 @@ class Admin extends Staff {
           dateOfBirth: dateOfBirth,
           department: department,
         ) {
-    // Load shifts from file when Admin is created
     loadStaffFromFile();
     loadShiftsFromFile();
     loadAssignmentsFromFile();
@@ -57,8 +54,6 @@ class Admin extends Staff {
   
   String _generateStaffId(String prefix) {
     if (staffs.isEmpty) return '${prefix}1';
-    
-    // Find all staff with the same prefix and extract their numbers
     int maxNumber = 0;
     for (var staff in staffs) {
       if (staff.id.startsWith(prefix)) {
@@ -72,55 +67,54 @@ class Admin extends Staff {
     
     return '$prefix${maxNumber + 1}';
   }
-void createDoctorAccount(
-  String firstName,
-  String lastName,
-  String email,
-  String phoneNumber,
-  DoctorSpecialization specialization,
-  DateTime dateOfBirth,
-  Department department,
+  void createDoctorAccount(
+    String firstName,
+    String lastName,
+    String email,
+    String phoneNumber,
+    DoctorSpecialization specialization,
+    DateTime dateOfBirth,
+    Department department,
+    ) {
+    String id = _generateStaffId('DR');
+    staffs.add(
+      Doctor(
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNumber: phoneNumber,
+        dateOfBirth: dateOfBirth,
+        department: department,
+        specialization: specialization,
+      ),
+    );
+    saveStaffToFile();
+  }
+
+  void createNurseAccount(
+    String firstName,
+    String lastName,
+    String email,
+    String phoneNumber,
+    DateTime dateOfBirth,
+    Department department,
   ) {
-  String id = _generateStaffId('DR');
-  staffs.add(
-    Doctor(
-      id: id,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-      dateOfBirth: dateOfBirth,
-      department: department,
-      specialization: specialization,
-    ),
-  );
-  saveStaffToFile();
-}
+    String id = _generateStaffId('N');
+    staffs.add(
+      Nurse(
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phoneNumber: phoneNumber,
+        dateOfBirth: dateOfBirth,
+        department: department,
+      ),
+    );
+    saveStaffToFile();
+  }
 
-void createNurseAccount(
-  String firstName,
-  String lastName,
-  String email,
-  String phoneNumber,
-  DateTime dateOfBirth,
-  Department department,
-) {
-  String id = _generateStaffId('N');
-  staffs.add(
-    Nurse(
-      id: id,
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phoneNumber: phoneNumber,
-      dateOfBirth: dateOfBirth,
-      department: department,
-    ),
-  );
-  saveStaffToFile();
-}
-
-  // Load shifts from JSON file
   void loadShiftsFromFile() {
     try {
       var loadedShifts = shiftRepository.readShifts();
@@ -131,7 +125,6 @@ void createNurseAccount(
     }
   }
 
-  // Save shifts to JSON file
   void saveShiftsToFile() {
     try {
       shiftRepository.writeShifts(shifts);
@@ -140,7 +133,6 @@ void createNurseAccount(
     }
   }
   void saveStaffToFile() {
-    // Implement staff saving logic if needed
     try{
       staffRepository.writeStaffs(staffs);
     } catch (e) {
@@ -157,7 +149,6 @@ void createNurseAccount(
     }
   }
 
-  // Load assignments from JSON file
   void loadAssignmentsFromFile() {
     try {
       var loadedAssignments = assignmentRepository.readAll();
@@ -168,14 +159,11 @@ void createNurseAccount(
         Shift? shift = shifts.firstWhere((s) => s.shiftId == assignment.shiftId);
         Staff? staff = staffs.firstWhere((s) => s.id == assignment.staffId);
         
-        // If shift doesn't have a list yet, create one
         if (!shiftAssignments.containsKey(shift)) {
           shiftAssignments[shift] = [];
         }
-        // Add staff to the shift's list
         shiftAssignments[shift]!.add(staff);
         
-        // Store assignment details
         String key = '${assignment.shiftId}-${assignment.staffId}';
         assignmentDetails[key] = assignment;
       }
@@ -186,16 +174,12 @@ void createNurseAccount(
     }
   }
 
-  // Save assignments to JSON file
   void saveAssignmentsToFile() {
     try {
       List<ShiftAssignment> assignments = [];
       shiftAssignments.forEach((shift, staffList) {
-        // Create an assignment entry for each staff in the shift
         for (var staff in staffList) {
           String key = '${shift.shiftId}-${staff.id}';
-          
-          // Check if we have detailed assignment info, otherwise create basic one
           if (assignmentDetails.containsKey(key)) {
             assignments.add(assignmentDetails[key]!);
           } else {
@@ -262,7 +246,6 @@ void createNurseAccount(
       throw ArgumentError('Invalid email format');
     }
 
-    // Update in staffs list
     for (int i = 0; i < staffs.length; i++) {
       if (staffs[i].id == staffId) {
         staffs[i] = staffs[i].copyWith(
@@ -283,11 +266,9 @@ void createNurseAccount(
       saveStaffToFile();
       
       if (staffs.length < initialLength) {
-        // Also remove from shift assignments - iterate through all shifts
         shiftAssignments.forEach((shift, staffList) {
           staffList.removeWhere((staff) => staff.id == staffId);
         });
-        // Remove empty shift assignments
         shiftAssignments.removeWhere((shift, staffList) => staffList.isEmpty);
         saveAssignmentsToFile();
         print('Staff member with ID $staffId deleted successfully');
@@ -345,7 +326,6 @@ void createNurseAccount(
         break;
     }
     
-    // Create shift with auto-generated ID
     int newId = _generateShiftId();
     Shift shift = Shift(
       shiftId: newId,
@@ -409,17 +389,14 @@ void createNurseAccount(
   void assignStaffToShift(int shiftId, String staffId) {
     Shift? shift = shifts.firstWhere((s) => s.shiftId == shiftId);
     Staff? staff = staffs.firstWhere((s) => s.id == staffId);
-    
-    // If shift doesn't have a list yet, create one
+
     if (!shiftAssignments.containsKey(shift)) {
       shiftAssignments[shift] = [];
     }
     
-    // Check if staff is already assigned to this shift
     if (!shiftAssignments[shift]!.any((s) => s.id == staffId)) {
       shiftAssignments[shift]!.add(staff);
       
-      // Initialize assignment details
       String key = '$shiftId-$staffId';
       assignmentDetails[key] = ShiftAssignment(
         shiftId: shiftId,
@@ -433,25 +410,21 @@ void createNurseAccount(
       print('Staff ${staff.id} is already assigned to Shift ${shift.shiftId}');
     }
   }
-  
-  // Update patients seen for a doctor in a specific shift
+
   void updatePatientsSeen(int shiftId, String staffId, int patients) {
     String key = '$shiftId-$staffId';
     
-    // Check if assignment exists
     if (!assignmentDetails.containsKey(key)) {
       print('Error: No assignment found for Staff $staffId in Shift $shiftId');
       return;
     }
     
-    // Check if the staff is a doctor
     Staff? staff = staffs.firstWhere((s) => s.id == staffId);
     if (staff is! Doctor) {
       print('Error: Only doctors can have patients seen recorded!');
       return;
     }
     
-    // Get current assignment and update patients seen
     ShiftAssignment currentAssignment = assignmentDetails[key]!;
     assignmentDetails[key] = currentAssignment.copyWith(patientsSeen: patients);
     
@@ -476,8 +449,7 @@ void createNurseAccount(
         for (var staff in staffList) {
           String role = getRoleFromId(staff.id);
           String key = '${shift.shiftId}-${staff.id}';
-          
-          // Check if we have assignment details (for doctors with patients seen)
+
           if (assignmentDetails.containsKey(key) && staff is Doctor) {
             ShiftAssignment assignment = assignmentDetails[key]!;
             print('    - ${staff.id} ($role): ${staff.firstName} ${staff.lastName}');
@@ -490,7 +462,6 @@ void createNurseAccount(
     });
   }
   
-  // Remove a specific staff from a shift assignment
   bool removeStaffFromShift(int shiftId, String staffId) {
     try {
       Shift? shift = shifts.firstWhere((s) => s.shiftId == shiftId);
@@ -505,7 +476,6 @@ void createNurseAccount(
       staffList.removeWhere((staff) => staff.id == staffId);
       
       if (staffList.length < initialLength) {
-        // Remove empty shift assignments
         if (staffList.isEmpty) {
           shiftAssignments.remove(shift);
         }
@@ -521,8 +491,7 @@ void createNurseAccount(
       return false;
     }
   }
-  
-  // Get all staff assigned to a specific shift
+
   List<Staff> getStaffForShift(int shiftId) {
     try {
       Shift? shift = shifts.firstWhere((s) => s.shiftId == shiftId);
@@ -542,19 +511,15 @@ void createNurseAccount(
     return totalShifts;
   } 
 
-  // Calculate monthly salary for a staff member
   void viewMonthlySalary(String staffId, int year, int month) {
     try {
-      // Find the staff member
       Staff? staff = staffs.firstWhere(
         (s) => s.id == staffId,
         orElse: () => throw Exception('Staff not found')
       );
 
-      // Create Payroll instance
       Payroll payroll = Payroll(staffId: staffId, baseSalary: 0.0);
       
-      // Calculate monthly salary
       double totalSalary = payroll.calculateMonthlySalary(
         year: year,
         month: month,
@@ -563,7 +528,6 @@ void createNurseAccount(
         assignmentDetails: assignmentDetails,
       );
 
-      // Display result
       String monthName = _getMonthName(month);
       print('\n${'=' * 60}');
       print('MONTHLY SALARY - $monthName $year');
@@ -583,7 +547,6 @@ void createNurseAccount(
     }
   }
 
-  // View all staff monthly salaries
   void viewAllMonthlySalaries(int year, int month) {
     String monthName = _getMonthName(month);
     print('\n${'=' * 70}');
@@ -613,7 +576,6 @@ void createNurseAccount(
     print('=' * 70);
   }
 
-  // Helper method to get month name
   String _getMonthName(int month) {
     const months = [
       '', 'January', 'February', 'March', 'April', 'May', 'June',

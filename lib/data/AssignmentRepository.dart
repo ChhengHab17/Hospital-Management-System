@@ -13,9 +13,7 @@ class AssignmentRepository {
         toJson: (a) => a.toJson(),
       );
 
-  // Read assignments from JSON file
   List<ShiftAssignment> readAll() => _repo().readAll();
 
-  // Write assignments to JSON file
   void writeAll(List<ShiftAssignment> assignments) => _repo().writeAll(assignments);
 }

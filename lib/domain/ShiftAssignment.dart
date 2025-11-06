@@ -30,7 +30,6 @@ class ShiftAssignment {
     return 'ShiftAssignment(shiftId: $shiftId, staffId: $staffId, patientsSeen: $patientsSeen)';
   }
 
-  // Create a copy with updated values
   ShiftAssignment copyWith({
     int? shiftId,
     String? staffId,

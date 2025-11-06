@@ -12,7 +12,7 @@ void main() {
       id: 'A1',
       firstName: 'Admin',
       lastName: 'User',
-      email: 'admin@hospital.com',
+      email: 'admin@gmail.com',
       phoneNumber: '1234567890',
       dateOfBirth: DateTime(1980, 1, 1),
       department: Department.General,
@@ -26,10 +26,10 @@ void main() {
   group('Critical Functionality Tests', () {
     test('1. Create doctor with correct ID and attributes', () {
       admin.createDoctorAccount(
-        'John',
-        'Doe',
-        'john.doe@hospital.com',
-        '1111111111',
+        'Tang',
+        'jeng',
+        'tangjeng@gmail.com',
+        '0111111111',
         DoctorSpecialization.cardiologist,
         DateTime(1990, 5, 15),
         Department.Cardiology,
@@ -38,15 +38,15 @@ void main() {
       expect(admin.staffs.length, 1);
       expect(admin.staffs[0].id, 'DR1');
       expect(admin.staffs[0], isA<Doctor>());
-      expect(admin.staffs[0].firstName, 'John');
+      expect(admin.staffs[0].firstName, 'Tang');
     });
 
-    test('3. Update contact info validates email format', () {
+    test('2. Update contact info validates email format', () {
       admin.createNurseAccount(
-        'Jane',
-        'Smith',
-        'jane.smith@hospital.com',
-        '2222222222',
+        'Kun',
+        'Pich',
+        'Pich@gmail.com',
+        '0222222222',
         DateTime(1992, 8, 20),
         Department.Emergency,
       );
@@ -56,11 +56,11 @@ void main() {
         throwsArgumentError,
       );
 
-      admin.updateContactInfo('N1', 'new.email@hospital.com', '2222222222');
-      expect(admin.staffs[0].email, 'new.email@hospital.com');
+      admin.updateContactInfo('N1', 'new.email@gmail.com', '0222222222');
+      expect(admin.staffs[0].email, 'new.email@gmail.com');
     });
 
-    test('4. Shift templates create correct times and allowances', () {
+    test('3. Shift templates create correct times and allowances', () {
       admin.createShiftFromTemplate(DateTime(2025, 11, 5), ShiftTemplate.morning);
       admin.createShiftFromTemplate(DateTime(2025, 11, 6), ShiftTemplate.evening);
       admin.createShiftFromTemplate(DateTime(2025, 11, 7), ShiftTemplate.night);
@@ -71,12 +71,12 @@ void main() {
       expect(admin.shifts[2].shiftAllowance, 150.0);
     });
 
-    test('5. Assign and remove staff from shifts', () {
+    test('4. Assign and remove staff from shifts', () {
       admin.createDoctorAccount(
-        'John',
-        'Doe',
-        'john.doe@hospital.com',
-        '1111111111',
+        'Tang',
+        'jeng',
+        'Tangjeng@gmail.com',
+        '0111111111',
         DoctorSpecialization.cardiologist,
         DateTime(1990, 5, 15),
         Department.Cardiology,
@@ -91,12 +91,12 @@ void main() {
       expect(admin.staffs.length, 1);
     });
 
-    test('6. Duplicate staff assignment does not duplicate', () {
+    test('5. Duplicate staff assignment does not duplicate', () {
       admin.createNurseAccount(
-        'Jane',
-        'Smith',
-        'jane.smith@hospital.com',
-        '2222222222',
+        'Kun',
+        'Pich',
+        'pich@gmail.com',
+        '0222222222',
         DateTime(1992, 8, 20),
         Department.Emergency,
       );
@@ -110,22 +110,22 @@ void main() {
       expect(count, 1);
     });
 
-    test('7. Only doctors can have patients seen updated', () {
+    test('6. Only doctors can have patients seen updated', () {
       admin.createDoctorAccount(
-        'John',
-        'Doe',
-        'john.doe@hospital.com',
-        '1111111111',
+        'Tang',
+        'jeng',
+        'Tangjeng@gmail.com',
+        '0111111111',
         DoctorSpecialization.cardiologist,
         DateTime(1990, 5, 15),
         Department.Cardiology,
       );
 
       admin.createNurseAccount(
-        'Jane',
-        'Smith',
-        'jane.smith@hospital.com',
-        '2222222222',
+        'Kun',
+        'Pich',
+        'Pich@gmail.com',
+        '0222222222',
         DateTime(1992, 8, 20),
         Department.Emergency,
       );
@@ -140,12 +140,12 @@ void main() {
       expect(() => admin.updatePatientsSeen(1, 'N1', 10), returnsNormally);
     });
 
-    test('8. Doctor monthly salary includes base + shifts + patient bonuses', () {
+    test('7. Doctor monthly salary includes base + shifts + patient bonuses', () {
       admin.createDoctorAccount(
-        'John',
-        'Doe',
-        'john.doe@hospital.com',
-        '1111111111',
+        'Tang',
+        'jeng',
+        'Tangjeng@gmail.com',
+        '0111111111',
         DoctorSpecialization.cardiologist,
         DateTime(1990, 5, 15),
         Department.Cardiology,
@@ -169,12 +169,12 @@ void main() {
       expect(salary, 5600.0);
     });
 
-    test('10. Only shifts from specified month are counted in salary', () {
+    test('8. Only shifts from specified month are counted in salary', () {
       admin.createDoctorAccount(
-        'John',
-        'Doe',
-        'john.doe@hospital.com',
-        '1111111111',
+        'Tang',
+        'jeng',
+        'Tangjeng@gmail.com',
+        '0111111111',
         DoctorSpecialization.cardiologist,
         DateTime(1990, 5, 15),
         Department.Cardiology,

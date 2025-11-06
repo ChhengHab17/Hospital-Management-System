@@ -92,8 +92,7 @@ class ShiftConsole {
         print('=' * 60);
         return;
       }
-      
-      // Trim whitespace and parse
+
       DateTime date = DateTime.parse(dateStr.trim());
       
       print('\nSelect shift type:');
@@ -140,8 +139,7 @@ class ShiftConsole {
       print('\n' + '=' * 60);
       print('REMOVE SHIFT'.padLeft(40));
       print('=' * 60);
-      
-      // First show all shifts
+
       final shifts = admin.getShifts();
       if (shifts.isEmpty) {
         print('No shifts available to remove.');
@@ -213,7 +211,6 @@ class ShiftConsole {
       stdout.write('Enter Shift ID: ');
       int shiftId = int.parse(stdin.readLineSync()!);
       
-      // Show current staff for this shift
       var staffList = admin.getStaffForShift(shiftId);
       if (staffList.isEmpty) {
         print('No staff assigned to Shift $shiftId');

@@ -13,9 +13,7 @@ class ShiftRepository {
         toJson: (s) => s.toJson(),
       );
 
-  // Read shifts from JSON file
   List<Shift> readShifts() => _repo().readAll();
 
-  // Write shifts to JSON file
   void writeShifts(List<Shift> shifts) => _repo().writeAll(shifts);
 }

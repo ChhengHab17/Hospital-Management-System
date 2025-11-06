@@ -23,9 +23,7 @@ class StaffRepository {
         toJson: (s) => s.toJson(),
       );
 
-  // Read all staff from JSON file
   List<Staff> readStaffs() => _repo().readAll();
 
-  // Write all staff to JSON file
   void writeStaffs(List<Staff> staffs) => _repo().writeAll(staffs);
 }
