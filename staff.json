@@ -85,6 +85,16 @@
       "dateOfBirth": "2000-09-09T00:00:00.000",
       "department": 5,
       "specialization": 4
+    },
+    {
+      "id": "DR7",
+      "firstName": "noo",
+      "lastName": "hi",
+      "email": "hellohi@gmail.com",
+      "phoneNumber": "018376489",
+      "dateOfBirth": "2006-05-23T00:00:00.000",
+      "department": 5,
+      "specialization": 3
     }
   ]
 }
